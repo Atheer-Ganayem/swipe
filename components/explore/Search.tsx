@@ -10,8 +10,6 @@ import { search } from "@/libs/actions/search";
 const Search = () => {
   const [state, formAction] = useFormState(search, { users: [], posts: [] });
 
-  console.log(state);
-
   return (
     <>
       <form action={formAction} className="flex">

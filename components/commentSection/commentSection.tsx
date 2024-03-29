@@ -18,7 +18,7 @@ const commentSection: React.FC<Props> = ({ comments, postId }) => {
           placeholder="Your comment..."
           className="textarea textarea-bordered textarea-lg w-full bg-base-200"
         ></textarea>
-        <input type="hidden" name="postId" value={postId} readOnly />
+        <input type="hidden" name="postId" value={postId.toString()} readOnly />
         <SubmitCommentBtn />
       </form>
       <div className="flex flex-col gap-8 my-5">

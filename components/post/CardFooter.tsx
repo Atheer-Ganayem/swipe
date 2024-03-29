@@ -2,7 +2,11 @@
 
 import React, { useOptimistic, useState } from "react";
 import { FaRegHeart, FaHeart, FaRegComment, FaRegShareFromSquare } from "react-icons/fa6";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import { like } from "@/libs/actions/postActions";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import DeletePost from "./DeletePost";
 
 interface Props {
   likersCount: number;
@@ -13,6 +17,8 @@ interface Props {
 }
 
 const CardFooter: React.FC<Props> = ({ likersCount, postId, isLiked, commentsCount, userName }) => {
+  const { data: session } = useSession();
+  const isAuthorOfThePost = session?.user?.name === userName;
   const [shareTooltipText, setShareTooltipText] = useState("Copy link");
 
   const [optimisticLike, addOptimisticLike] = useOptimistic(
@@ -26,8 +32,6 @@ const CardFooter: React.FC<Props> = ({ likersCount, postId, isLiked, commentsCou
   );
 
   async function onLike() {
-    console.log("liking...");
-
     addOptimisticLike({
       newLikeCount: optimisticLike.likersCount + (!isLiked ? 1 : -1),
       newIsLiked: !optimisticLike.isLiked,
@@ -54,10 +58,10 @@ const CardFooter: React.FC<Props> = ({ likersCount, postId, isLiked, commentsCou
         </label>
         <span>{optimisticLike.likersCount} Likes</span>
       </div>
-      <div className="flex gap-3">
+      <Link href={`/profile/${userName}/${postId}`} className="flex gap-3">
         <FaRegComment className="text-2xl" />
         <span>{commentsCount} Comments</span>
-      </div>
+      </Link>
       <div
         className="flex gap-3 tooltip hover:cursor-pointer"
         data-tip={shareTooltipText}
@@ -66,6 +70,21 @@ const CardFooter: React.FC<Props> = ({ likersCount, postId, isLiked, commentsCou
         <FaRegShareFromSquare className="text-2xl" />
         <span>Share</span>
       </div>
+      {isAuthorOfThePost && (
+        <div className="dropdown">
+          <div tabIndex={0} role="button" className="">
+            <BsThreeDotsVertical />
+          </div>
+          <ul
+            tabIndex={0}
+            className="dropdown-content z-[1] menu p-2 shadow bg-base-300 rounded-box w-fit"
+          >
+            <li className="text-red-500">
+              <DeletePost postId={postId} />
+            </li>
+          </ul>
+        </div>
+      )}
     </footer>
   );
 };

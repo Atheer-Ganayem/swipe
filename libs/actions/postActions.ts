@@ -9,8 +9,6 @@ import { connectMongoDB } from "../connectDB";
 import { revalidatePath } from "next/cache";
 
 export const like: (postId: string) => Promise<Res> = async postId => {
-  console.log("liking...");
-
   try {
     const session = await getServerSession();
     if (!session) {

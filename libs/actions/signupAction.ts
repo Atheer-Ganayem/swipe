@@ -25,7 +25,6 @@ export const signup: (prevState: any, formData: FormData) => Promise<Res> = asyn
     const image = formData.get("image") as File;
 
     const validationResult: string = validate({ name, email, password, confirmPassword, image });
-    console.log(validationResult);
 
     if (validationResult) {
       return { error: true, message: validationResult, code: 422 };
