@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+const { colors: defaultColors } = require("tailwindcss/defaultTheme");
 
 const config: Config = {
   content: [
@@ -8,13 +9,18 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        "dark-secondary": "#191E24",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
+  daisyui: {
+    themes: ["light", "dark"],
+  },
 };
 export default config;
